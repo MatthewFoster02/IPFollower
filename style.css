@@ -86,4 +86,155 @@ body {
     color: black;
     font-size: var(--fs-body);
     font-weight: var(--fw-regular);
+    z-index: -2;
+}
+main {
+    z-index: -2;
+}
+
+.background {
+    position: absolute;
+    z-index: -1;
+    height: 250px;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+.main-title {
+    color: white;
+    font-weight: var(--fw-medium);
+    font-size: 1.5rem;
+}
+
+.input-field {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+    height: 3rem;
+    width: 21rem;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.ip-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: white;
+    padding: 1.2rem;
+    min-width: 21rem;
+    max-width: 22rem;
+    border-radius: 0.5rem;
+    align-items: center;
+    z-index: 5;
+}
+
+.title {
+    font-size: 0.6rem;
+    color: var(--clr-200);
+    text-transform: uppercase;
+    font-weight: var(--fw-medium);
+    letter-spacing: 1px;
+}
+
+.ip-address,
+.location,
+.timezone,
+.isp {
+    text-align: center;
+}
+
+#ip-address,
+#location,
+#timezone,
+#isp {
+    font-weight: var(--fw-medium);
+}
+
+.input-location {
+    height: 3rem;
+    width: 18rem;
+    border: none;
+    outline: none;
+    padding-left: 0.5rem;
+}
+
+.go {
+    height: 3rem;
+    width: 3rem;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.loc {
+    margin: auto;
+    margin-top: 7.5rem;
+}
+
+#map {
+    position: absolute;
+    top: 250px;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 1;
+}
+
+@media (min-width: 800px) {
+    .main-title {
+        font-size: 2rem;
+    }
+
+    .input-field {
+        width: 30rem;
+    }
+
+    .input-location {
+        width: 27rem;
+    }
+
+    .background {
+        width: 100vw;
+    }
+
+    .ip-info {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        min-width: 50rem;
+        padding: 2rem;
+        margin-top: 3rem;
+        justify-content: space-between;
+    }
+
+    .ip-address {
+        text-align: left;
+    }
+
+    .location,
+    .timezone,
+    .isp {
+        height: max-content;
+        text-align: left;
+        border-left: solid 1px var(--clr-200);
+        padding-left: 1rem;
+    }
+
+    .title {
+        text-align: left;
+    }
+
+    #ip-address,
+    #location,
+    #timezone,
+    #isp {
+        font-size: 1.2rem;
+    }
 }

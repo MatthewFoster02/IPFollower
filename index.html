@@ -8,18 +8,99 @@
   
   <title>Frontend Mentor | IP Address Tracker</title>
   <link rel="stylesheet" href="style.css">
+  <!-- Maps linkin -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
   <!-- GOOGLE FONTS -->
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
   <main>
-    IP Address Tracker
-    Search for any IP address or domain
-    IP Address
-    Location
-    Timezone
-      UTC <!-- add offset value dynamically using the API -->
-    ISP
+    <img src="images/pattern-bg.png" alt="" class="background">
+    <div class="content">
+      <h1 class="main-title">IP Address Tracker</h1>
+      <div class="input-field">
+        <input type="text" id="your-location" class="input-location" placeholder="Search for any IP address or domain"></input>
+        <a href="#" class="go" id="arrow"><img src="images/icon-arrow.svg" alt="" class="arrow"></a>
+      </div>
+      <div class="ip-info">
+        <div class="ip-address">
+          <p class="title">IP Address</p>
+          <span id="ip-address">0.0.0.0</span>
+        </div>
+        <div class="location">
+          <p class="title">Location</p>
+          <span id="location">Null Island</span>
+        </div>
+        <div class="timezone">
+          <p class="title">Timezone</p>
+            <span id="timezone">UTC 00:00<!-- add offset value dynamically using the API --></span>
+        </div>
+        <div class="isp">
+          <p class="title">ISP</p>
+          <span id="isp">Unkown</span>
+        </div>
+      </div>
+    </div>
+    <div id="map"></div>
   </main>
+  <script src="main.js"></script>
+  <script>
+    const arrow = document.getElementById("arrow");
+    const input_ip = document.getElementById("your-location");
+
+    const ip_address = document.getElementById("ip-address");
+    const loc = document.getElementById("location");
+    const timezone = document.getElementById("timezone");
+    const isp = document.getElementById("isp");
+
+    var map = L.map('map', { zoomControl: false }).setView([0, 0], 15);
+    L.tileLayer('https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=80Q0RSBJoSDGlLOvpYx9', {
+        maxZoom: 19,
+        attribution: '<a href="https://www.maptiler.com/copyright/" target="_blank">&copy; MapTiler</a> <a href="https://www.openstreetmap.org/copyright" target="_blank">&copy; OpenStreetMap contributors</a>'
+    }).addTo(map);
+    var marker = L.marker([0, 0]).addTo(map);
+
+    arrow.addEventListener('click', () => 
+    {
+        callAPI();
+    });
+
+    input_ip.addEventListener('keyup', (event) =>
+    {
+      if(event.key === "Enter")
+      {
+        callAPI();
+      }
+    });
+
+    function callAPI()
+    {
+      let ipAddress = "192.212.174.101";
+      let request = "https://geo.ipify.org/api/v2/country,city?apiKey=at_mpGMDXOZ0mT0QLwhS0IW8UXQEotkO&ipAddress=";
+
+      if(input_ip.value != "")
+      {
+          ipAddress = input_ip.value;
+      }
+
+      let url = request + ipAddress;
+      
+      fetch(url).then(res => res.json()).then(data =>
+      {
+          ip_address.innerHTML = data['ip'];
+          loc.innerHTML = data['location']['city'] + ", " + data['location']['region'] + ", " + data['location']['country'];
+          timezone.innerHTML = "UTC " + data['location']['timezone'];
+          isp.innerHTML = data['isp'];
+
+          let longitude = data['location']['lng'];
+          let latitude = data['location']['lat'];
+
+          console.log(latitude, longitude);
+          map.setView([latitude, longitude], 16);
+          var marker = L.marker([latitude, longitude]).addTo(map);
+      });
+    }
+  </script>
 </body>
 </html>
